@@ -1,33 +1,16 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer } = require('apollo-server')
+const path = require('path')
+const { loadFilesSync } = require('@graphql-tools/load-files')
+const { mergeTypeDefs } = require('@graphql-tools/merge')
 
-const users = [
-  {
-    nome: "Ana",
-    ativo: true
-  },
-  {
-    nome: "Marcia",
-    ativo: false
-  }
-]
+const typeDefs = (() => {
+  const arquivosSchemas = loadFilesSync(path.join(__dirname, './user/schemas'))
+  return mergeTypeDefs(arquivosSchemas, { all: true })
+})()
 
-const typeDefs = gql`
-  type User {
-    nome: String!
-    ativo: Boolean!
-  }
-
-    type Query {
-      users: [User]
-    }
-  `
-
-const resolvers = {
-  Query: {
-    users: () => users
-  },
- };
- 
+const resolvers = (() => {
+  return loadFilesSync(path.join(__dirname, './user/resolvers'))
+})()
 
 const server = new ApolloServer({ typeDefs, resolvers })
 

@@ -1,0 +1,8 @@
+  type User {
+    nome: String!
+    ativo: Boolean!
+  }
+
+    type Query {
+      users: [User]
+    }
