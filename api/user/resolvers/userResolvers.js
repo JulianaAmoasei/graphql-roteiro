@@ -1,18 +1,10 @@
-const users = [
-  {
-    nome: "Ana",
-    ativo: true
-  },
-  {
-    nome: "Marcia",
-    ativo: false
-  }
-]
-
 const resolvers = {
   Query: {
-    users: () => users
+    users: (root, args, { dataSources }, info) => dataSources.usersAPI.getUsers(),
+    user: (root, { id }, { dataSources }, info) => dataSources.usersAPI.getUserById(id),
   },
 }
 
 module.exports = resolvers
+
+

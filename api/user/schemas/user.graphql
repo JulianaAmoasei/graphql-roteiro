@@ -1,8 +1,17 @@
-  type User {
-    nome: String!
-    ativo: Boolean!
-  }
+type User {
+  id: ID!
+  nome: String!
+  ativo: Boolean!
+  email: String!
+  role: Role!
+}
 
-    type Query {
-      users: [User]
-    }
+type Role {
+  id: ID!
+  type: String!
+}
+
+type Query {
+  users: [User]
+  user(id: ID!): User!
+}
