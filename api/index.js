@@ -1,4 +1,4 @@
-const { ApolloServer } = require('apollo-server')
+const { ApolloServer, makeExecutableSchema } = require('apollo-server')
 const UsersAPI = require('./user/datasources')
 const path = require('path')
 const { loadFilesSync } = require('@graphql-tools/load-files')
@@ -13,9 +13,14 @@ const resolvers = (() => {
   return loadFilesSync(path.join(__dirname, './user/resolvers'))
 })()
 
-const server = new ApolloServer({
+const schema = makeExecutableSchema({
   typeDefs, 
   resolvers,
+  resolverValidationOptions: { requireResolversForResolveType: false },
+})
+
+const server = new ApolloServer({
+  schema,
   dataSources: () => {
     return {
       usersAPI: new UsersAPI(),
